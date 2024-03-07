@@ -1,0 +1,50 @@
+﻿<Page x:Class="Transport_Company_App.Drivers"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Transport_Company_App"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Drivers">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="41*"/>
+        </Grid.RowDefinitions>
+
+        <DataGrid Name="DriversDG" Grid.Row="1" AutoGenerateColumns="False" d:ItemsSource="{d:SampleData ItemCount=5}" CanUserDeleteRows="False" CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Номер водителя" Width="*" Binding="{Binding Path=ID_водителя}"/>
+                <DataGridTextColumn Header="Фамилия" Width="*" Binding="{Binding Path=Фамилия}"/>
+                <DataGridTextColumn Header="Имя" Width="*" Binding="{Binding Path=Имя}"/>
+                <DataGridTextColumn Header="Отчество" Width="*" Binding="{Binding Path=Отчество}"/>
+                <DataGridTextColumn Header="Возраст" Width="*" Binding="{Binding Path=Возраст}"/>
+                <DataGridTextColumn Header="Телефонный номер" Width="*" Binding="{Binding Path=Телефонный_номер}"/>
+                <DataGridTextColumn Header="Категория лицензии" Width="*" Binding="{Binding Path=Категория_лицензии}"/>
+
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Margin="5" Content="Удалить" Name="delete" Click="delete_Click"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Margin="5" Content="Ред." Name="red" Click="red_Click"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <TextBox Name="search" Width="395" HorizontalAlignment="Left" FontSize="21"/>
+        <Button Width="100" Content="Поиск" Click="Search_Click" FontSize="17"/>
+        <Button Width="140" Content="Добавить" HorizontalAlignment="Right" Click="Add_Click"/>
+
+    </Grid>
+</Page>

@@ -1,0 +1,423 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище TransportCompanyDBModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Водители">
+          <Key>
+            <PropertyRef Name="ID_водителя" />
+          </Key>
+          <Property Name="ID_водителя" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Фамилия" Type="varchar" MaxLength="50" />
+          <Property Name="Имя" Type="varchar" MaxLength="50" />
+          <Property Name="Отчество" Type="varchar" MaxLength="50" />
+          <Property Name="Возраст" Type="int" />
+          <Property Name="Телефонный_номер" Type="varchar" MaxLength="15" />
+          <Property Name="Категория_лицензии" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Заказы">
+          <Key>
+            <PropertyRef Name="ID_заказа" />
+          </Key>
+          <Property Name="ID_заказа" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_водителя" Type="int" />
+          <Property Name="ID_транспорта" Type="int" />
+          <Property Name="ID_маршрута" Type="int" />
+          <Property Name="Дата_время_заказа" Type="datetime" />
+          <Property Name="Статус_заказа" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="История_заказов">
+          <Key>
+            <PropertyRef Name="ID_записи" />
+          </Key>
+          <Property Name="ID_записи" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_заказа" Type="int" />
+          <Property Name="ID_клиента" Type="int" />
+          <Property Name="ДатаВыполненияВремя" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Клиенты">
+          <Key>
+            <PropertyRef Name="ID_клиента" />
+          </Key>
+          <Property Name="ID_клиента" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Фамилия" Type="varchar" MaxLength="50" />
+          <Property Name="Имя" Type="varchar" MaxLength="50" />
+          <Property Name="Номер_телефона" Type="varchar" MaxLength="15" />
+          <Property Name="Адрес" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Маршруты">
+          <Key>
+            <PropertyRef Name="ID_маршрута" />
+          </Key>
+          <Property Name="ID_маршрута" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Начальная_точка" Type="varchar" MaxLength="100" />
+          <Property Name="Конечная_точка" Type="varchar" MaxLength="100" />
+          <Property Name="Дистанция" Type="float" />
+          <Property Name="Время_в_пути" Type="time" Precision="7" />
+        </EntityType>
+        <EntityType Name="Транспорт">
+          <Key>
+            <PropertyRef Name="ID_транспорта" />
+          </Key>
+          <Property Name="ID_транспорта" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Бренд" Type="varchar" MaxLength="50" />
+          <Property Name="Модель" Type="varchar" MaxLength="50" />
+          <Property Name="Год" Type="int" />
+          <Property Name="Номерной_знак" Type="varchar" MaxLength="15" />
+          <Property Name="Емкость" Type="int" />
+        </EntityType>
+        <Association Name="FK__OrderHist__Order__440B1D61">
+          <End Role="Заказы" Type="Self.Заказы" Multiplicity="0..1" />
+          <End Role="История_заказов" Type="Self.История_заказов" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Заказы">
+              <PropertyRef Name="ID_заказа" />
+            </Principal>
+            <Dependent Role="История_заказов">
+              <PropertyRef Name="ID_заказа" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orders__DriverID__3D5E1FD2">
+          <End Role="Водители" Type="Self.Водители" Multiplicity="0..1" />
+          <End Role="Заказы" Type="Self.Заказы" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Водители">
+              <PropertyRef Name="ID_водителя" />
+            </Principal>
+            <Dependent Role="Заказы">
+              <PropertyRef Name="ID_водителя" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orders__RouteID__3F466844">
+          <End Role="Маршруты" Type="Self.Маршруты" Multiplicity="0..1" />
+          <End Role="Заказы" Type="Self.Заказы" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Маршруты">
+              <PropertyRef Name="ID_маршрута" />
+            </Principal>
+            <Dependent Role="Заказы">
+              <PropertyRef Name="ID_маршрута" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orders__VehicleI__3E52440B">
+          <End Role="Транспорт" Type="Self.Транспорт" Multiplicity="0..1" />
+          <End Role="Заказы" Type="Self.Заказы" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Транспорт">
+              <PropertyRef Name="ID_транспорта" />
+            </Principal>
+            <Dependent Role="Заказы">
+              <PropertyRef Name="ID_транспорта" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__История_з__ID_кл__440B1D61">
+          <End Role="Клиенты" Type="Self.Клиенты" Multiplicity="0..1" />
+          <End Role="История_заказов" Type="Self.История_заказов" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Клиенты">
+              <PropertyRef Name="ID_клиента" />
+            </Principal>
+            <Dependent Role="История_заказов">
+              <PropertyRef Name="ID_клиента" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище TransportCompanyDBModelContainer">
+          <EntitySet Name="Водители" EntityType="Self.Водители" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Заказы" EntityType="Self.Заказы" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="История_заказов" EntityType="Self.История_заказов" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Клиенты" EntityType="Self.Клиенты" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Маршруты" EntityType="Self.Маршруты" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Транспорт" EntityType="Self.Транспорт" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__OrderHist__Order__440B1D61" Association="Self.FK__OrderHist__Order__440B1D61">
+            <End Role="Заказы" EntitySet="Заказы" />
+            <End Role="История_заказов" EntitySet="История_заказов" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orders__DriverID__3D5E1FD2" Association="Self.FK__Orders__DriverID__3D5E1FD2">
+            <End Role="Водители" EntitySet="Водители" />
+            <End Role="Заказы" EntitySet="Заказы" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orders__RouteID__3F466844" Association="Self.FK__Orders__RouteID__3F466844">
+            <End Role="Маршруты" EntitySet="Маршруты" />
+            <End Role="Заказы" EntitySet="Заказы" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orders__VehicleI__3E52440B" Association="Self.FK__Orders__VehicleI__3E52440B">
+            <End Role="Транспорт" EntitySet="Транспорт" />
+            <End Role="Заказы" EntitySet="Заказы" />
+          </AssociationSet>
+          <AssociationSet Name="FK__История_з__ID_кл__440B1D61" Association="Self.FK__История_з__ID_кл__440B1D61">
+            <End Role="Клиенты" EntitySet="Клиенты" />
+            <End Role="История_заказов" EntitySet="История_заказов" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TransportCompanyDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Водители">
+          <Key>
+            <PropertyRef Name="ID_водителя" />
+          </Key>
+          <Property Name="ID_водителя" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Фамилия" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Имя" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Отчество" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Возраст" Type="Int32" />
+          <Property Name="Телефонный_номер" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Категория_лицензии" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Заказы" Relationship="Self.FK__Orders__DriverID__3D5E1FD2" FromRole="Водители" ToRole="Заказы" />
+        </EntityType>
+        <EntityType Name="Заказы">
+          <Key>
+            <PropertyRef Name="ID_заказа" />
+          </Key>
+          <Property Name="ID_заказа" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_водителя" Type="Int32" />
+          <Property Name="ID_транспорта" Type="Int32" />
+          <Property Name="ID_маршрута" Type="Int32" />
+          <Property Name="Дата_время_заказа" Type="DateTime" Precision="3" />
+          <Property Name="Статус_заказа" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Водители" Relationship="Self.FK__Orders__DriverID__3D5E1FD2" FromRole="Заказы" ToRole="Водители" />
+          <NavigationProperty Name="История_заказов" Relationship="Self.FK__OrderHist__Order__440B1D61" FromRole="Заказы" ToRole="История_заказов" />
+          <NavigationProperty Name="Маршруты" Relationship="Self.FK__Orders__RouteID__3F466844" FromRole="Заказы" ToRole="Маршруты" />
+          <NavigationProperty Name="Транспорт" Relationship="Self.FK__Orders__VehicleI__3E52440B" FromRole="Заказы" ToRole="Транспорт" />
+        </EntityType>
+        <EntityType Name="История_заказов">
+          <Key>
+            <PropertyRef Name="ID_записи" />
+          </Key>
+          <Property Name="ID_записи" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_заказа" Type="Int32" />
+          <Property Name="ID_клиента" Type="Int32" />
+          <Property Name="ДатаВыполненияВремя" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Заказы" Relationship="Self.FK__OrderHist__Order__440B1D61" FromRole="История_заказов" ToRole="Заказы" />
+          <NavigationProperty Name="Клиенты" Relationship="Self.FK__История_з__ID_кл__440B1D61" FromRole="История_заказов" ToRole="Клиенты" />
+        </EntityType>
+        <EntityType Name="Клиенты">
+          <Key>
+            <PropertyRef Name="ID_клиента" />
+          </Key>
+          <Property Name="ID_клиента" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Фамилия" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Имя" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Номер_телефона" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Адрес" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="История_заказов" Relationship="Self.FK__История_з__ID_кл__440B1D61" FromRole="Клиенты" ToRole="История_заказов" />
+        </EntityType>
+        <EntityType Name="Маршруты">
+          <Key>
+            <PropertyRef Name="ID_маршрута" />
+          </Key>
+          <Property Name="ID_маршрута" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Начальная_точка" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Конечная_точка" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Дистанция" Type="Double" />
+          <Property Name="Время_в_пути" Type="Time" Precision="7" />
+          <NavigationProperty Name="Заказы" Relationship="Self.FK__Orders__RouteID__3F466844" FromRole="Маршруты" ToRole="Заказы" />
+        </EntityType>
+        <EntityType Name="Транспорт">
+          <Key>
+            <PropertyRef Name="ID_транспорта" />
+          </Key>
+          <Property Name="ID_транспорта" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Бренд" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Модель" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Год" Type="Int32" />
+          <Property Name="Номерной_знак" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Емкость" Type="Int32" />
+          <NavigationProperty Name="Заказы" Relationship="Self.FK__Orders__VehicleI__3E52440B" FromRole="Транспорт" ToRole="Заказы" />
+        </EntityType>
+        <Association Name="FK__Orders__DriverID__3D5E1FD2">
+          <End Role="Водители" Type="Self.Водители" Multiplicity="0..1" />
+          <End Role="Заказы" Type="Self.Заказы" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Водители">
+              <PropertyRef Name="ID_водителя" />
+            </Principal>
+            <Dependent Role="Заказы">
+              <PropertyRef Name="ID_водителя" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderHist__Order__440B1D61">
+          <End Role="Заказы" Type="Self.Заказы" Multiplicity="0..1" />
+          <End Role="История_заказов" Type="Self.История_заказов" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Заказы">
+              <PropertyRef Name="ID_заказа" />
+            </Principal>
+            <Dependent Role="История_заказов">
+              <PropertyRef Name="ID_заказа" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orders__RouteID__3F466844">
+          <End Role="Маршруты" Type="Self.Маршруты" Multiplicity="0..1" />
+          <End Role="Заказы" Type="Self.Заказы" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Маршруты">
+              <PropertyRef Name="ID_маршрута" />
+            </Principal>
+            <Dependent Role="Заказы">
+              <PropertyRef Name="ID_маршрута" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orders__VehicleI__3E52440B">
+          <End Role="Транспорт" Type="Self.Транспорт" Multiplicity="0..1" />
+          <End Role="Заказы" Type="Self.Заказы" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Транспорт">
+              <PropertyRef Name="ID_транспорта" />
+            </Principal>
+            <Dependent Role="Заказы">
+              <PropertyRef Name="ID_транспорта" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__История_з__ID_кл__440B1D61">
+          <End Role="Клиенты" Type="Self.Клиенты" Multiplicity="0..1" />
+          <End Role="История_заказов" Type="Self.История_заказов" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Клиенты">
+              <PropertyRef Name="ID_клиента" />
+            </Principal>
+            <Dependent Role="История_заказов">
+              <PropertyRef Name="ID_клиента" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TransportCompanyDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Водители" EntityType="Self.Водители" />
+          <EntitySet Name="Заказы" EntityType="Self.Заказы" />
+          <EntitySet Name="История_заказов" EntityType="Self.История_заказов" />
+          <EntitySet Name="Клиенты" EntityType="Self.Клиенты" />
+          <EntitySet Name="Маршруты" EntityType="Self.Маршруты" />
+          <EntitySet Name="Транспорт" EntityType="Self.Транспорт" />
+          <AssociationSet Name="FK__Orders__DriverID__3D5E1FD2" Association="Self.FK__Orders__DriverID__3D5E1FD2">
+            <End Role="Водители" EntitySet="Водители" />
+            <End Role="Заказы" EntitySet="Заказы" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderHist__Order__440B1D61" Association="Self.FK__OrderHist__Order__440B1D61">
+            <End Role="Заказы" EntitySet="Заказы" />
+            <End Role="История_заказов" EntitySet="История_заказов" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orders__RouteID__3F466844" Association="Self.FK__Orders__RouteID__3F466844">
+            <End Role="Маршруты" EntitySet="Маршруты" />
+            <End Role="Заказы" EntitySet="Заказы" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orders__VehicleI__3E52440B" Association="Self.FK__Orders__VehicleI__3E52440B">
+            <End Role="Транспорт" EntitySet="Транспорт" />
+            <End Role="Заказы" EntitySet="Заказы" />
+          </AssociationSet>
+          <AssociationSet Name="FK__История_з__ID_кл__440B1D61" Association="Self.FK__История_з__ID_кл__440B1D61">
+            <End Role="Клиенты" EntitySet="Клиенты" />
+            <End Role="История_заказов" EntitySet="История_заказов" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище TransportCompanyDBModelContainer" CdmEntityContainer="TransportCompanyDBEntities">
+          <EntitySetMapping Name="Водители">
+            <EntityTypeMapping TypeName="TransportCompanyDBModel.Водители">
+              <MappingFragment StoreEntitySet="Водители">
+                <ScalarProperty Name="ID_водителя" ColumnName="ID_водителя" />
+                <ScalarProperty Name="Фамилия" ColumnName="Фамилия" />
+                <ScalarProperty Name="Имя" ColumnName="Имя" />
+                <ScalarProperty Name="Отчество" ColumnName="Отчество" />
+                <ScalarProperty Name="Возраст" ColumnName="Возраст" />
+                <ScalarProperty Name="Телефонный_номер" ColumnName="Телефонный_номер" />
+                <ScalarProperty Name="Категория_лицензии" ColumnName="Категория_лицензии" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Заказы">
+            <EntityTypeMapping TypeName="TransportCompanyDBModel.Заказы">
+              <MappingFragment StoreEntitySet="Заказы">
+                <ScalarProperty Name="ID_заказа" ColumnName="ID_заказа" />
+                <ScalarProperty Name="ID_водителя" ColumnName="ID_водителя" />
+                <ScalarProperty Name="ID_транспорта" ColumnName="ID_транспорта" />
+                <ScalarProperty Name="ID_маршрута" ColumnName="ID_маршрута" />
+                <ScalarProperty Name="Дата_время_заказа" ColumnName="Дата_время_заказа" />
+                <ScalarProperty Name="Статус_заказа" ColumnName="Статус_заказа" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="История_заказов">
+            <EntityTypeMapping TypeName="TransportCompanyDBModel.История_заказов">
+              <MappingFragment StoreEntitySet="История_заказов">
+                <ScalarProperty Name="ID_записи" ColumnName="ID_записи" />
+                <ScalarProperty Name="ID_заказа" ColumnName="ID_заказа" />
+                <ScalarProperty Name="ID_клиента" ColumnName="ID_клиента" />
+                <ScalarProperty Name="ДатаВыполненияВремя" ColumnName="ДатаВыполненияВремя" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Клиенты">
+            <EntityTypeMapping TypeName="TransportCompanyDBModel.Клиенты">
+              <MappingFragment StoreEntitySet="Клиенты">
+                <ScalarProperty Name="ID_клиента" ColumnName="ID_клиента" />
+                <ScalarProperty Name="Фамилия" ColumnName="Фамилия" />
+                <ScalarProperty Name="Имя" ColumnName="Имя" />
+                <ScalarProperty Name="Номер_телефона" ColumnName="Номер_телефона" />
+                <ScalarProperty Name="Адрес" ColumnName="Адрес" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Маршруты">
+            <EntityTypeMapping TypeName="TransportCompanyDBModel.Маршруты">
+              <MappingFragment StoreEntitySet="Маршруты">
+                <ScalarProperty Name="ID_маршрута" ColumnName="ID_маршрута" />
+                <ScalarProperty Name="Начальная_точка" ColumnName="Начальная_точка" />
+                <ScalarProperty Name="Конечная_точка" ColumnName="Конечная_точка" />
+                <ScalarProperty Name="Дистанция" ColumnName="Дистанция" />
+                <ScalarProperty Name="Время_в_пути" ColumnName="Время_в_пути" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Транспорт">
+            <EntityTypeMapping TypeName="TransportCompanyDBModel.Транспорт">
+              <MappingFragment StoreEntitySet="Транспорт">
+                <ScalarProperty Name="ID_транспорта" ColumnName="ID_транспорта" />
+                <ScalarProperty Name="Бренд" ColumnName="Бренд" />
+                <ScalarProperty Name="Модель" ColumnName="Модель" />
+                <ScalarProperty Name="Год" ColumnName="Год" />
+                <ScalarProperty Name="Номерной_знак" ColumnName="Номерной_знак" />
+                <ScalarProperty Name="Емкость" ColumnName="Емкость" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

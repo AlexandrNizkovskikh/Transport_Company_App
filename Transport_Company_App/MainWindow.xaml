@@ -1,0 +1,35 @@
+﻿<Window x:Class="Transport_Company_App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Transport_Company_App"
+        mc:Ignorable="d"
+        Title="Transport Company App" Height="450" Width="800">
+    <Grid>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="195"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Frame Name="MainFrame" Grid.RowSpan="7" NavigationUIVisibility="Hidden" Margin="5,0,0,0" Grid.Column="1"/>
+
+            <Button Name="DriversButton" Grid.Row="0" Content="Водители" Click="DriversButton_Click" Margin="5"/>
+            <Button Name="OrdersButton" Grid.Row="1" Content="Заказы" Click="OrdersButton_Click" Margin="5"/>
+            <Button Name="OrderHistoryButton" Grid.Row="2" Content="История заказов" Click="OrderHistoryButton_Click" Margin="5"/>
+            <Button Name="ClientsButton" Grid.Row="3" Content="Клиенты" Click="ClientsButton_Click" Margin="5"/>
+            <Button Name="RoutesButton" Grid.Row="4" Content="Маршруты" Click="RoutesButton_Click" Margin="5"/>
+            <Button Name="TransportButton" Grid.Row="5" Content="Транспорт" Click="TransportButton_Click" Margin="5"/>
+        </Grid>
+    </Grid>
+</Window>
